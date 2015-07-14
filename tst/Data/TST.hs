@@ -1,3 +1,5 @@
+{-# LANGUAGE DeriveGeneric      #-}
+{-# LANGUAGE DeriveDataTypeable #-}
 -- | Implementation of a Ternary Search Tree:
 --   <https://en.wikipedia.org/wiki/Ternary_search_tree>, which is a structure
 --   useful to store any list-like thing.  It is quite resistant to non-random
@@ -25,7 +27,9 @@ module Data.TST
     , matchWL
     ) where
 
-import            Control.Arrow (first)
+import            Control.Arrow  (first)
+import            GHC.Generics   (Generic)
+import            Data.Typeable  (Typeable)
 import            Prelude hiding (lookup)
 
 -- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ --
@@ -35,6 +39,7 @@ import            Prelude hiding (lookup)
 data TST sym v = Branch !sym !(TST sym v) !(TST sym v) !(TST sym v)
                | End v !(TST sym v)
                | Null
+               deriving (Generic,Typeable)
 
 instance Functor (TST sym) where
   fmap f (Branch c l m r) = Branch c (fmap f l) (fmap f m) (fmap f r)
