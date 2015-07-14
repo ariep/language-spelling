@@ -36,6 +36,11 @@ data TST sym v = Branch !sym !(TST sym v) !(TST sym v) !(TST sym v)
                | End v !(TST sym v)
                | Null
 
+instance Functor (TST sym) where
+  fmap f (Branch c l m r) = Branch c (fmap f l) (fmap f m) (fmap f r)
+  fmap f (End v t)        = End (f v) (fmap f t)
+  fmap _ Null             = Null
+
 instance (Ord sym, Eq v) => Eq (TST sym v) where
     t1 == t2 = toList t1 == toList t2
 
